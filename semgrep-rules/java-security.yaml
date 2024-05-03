@@ -1,0 +1,35 @@
+rules:
+    - id: java-security
+      patterns:
+          # Hardcoded password
+          - pattern: |
+                <StringLiteral>password</StringLiteral>
+            message: "Potential hardcoded password"
+
+          # SQL Injection
+          - pattern: |
+                MethodInvocation
+                args:
+                  1:
+                    BinaryOperation
+                    right:
+                      StringLiteral
+                      text: "*"
+            message: "Potential SQL Injection"
+
+          # XSS (Cross-Site Scripting)
+          - pattern: |
+                MethodInvocation
+                args:
+                  0:
+                    StringLiteral
+            message: "Potential XSS vulnerability"
+
+          # Command Injection
+          - pattern: |
+                MethodInvocation
+                args:
+                  0:
+                    StringLiteral
+                    text: "*"
+            message: "Potential command injection"
